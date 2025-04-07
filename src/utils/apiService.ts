@@ -1,10 +1,9 @@
-
 import OpenAI from "openai";
 import { ChatResponse } from '@/types';
 
 // Initialize the OpenAI client
 const client = new OpenAI({
-  apiKey: import.meta.env.VITE_OPENAI_API_KEY || 'your-demo-api-key',
+  apiKey: import.meta.env.VITE_OPENAI_API_KEY || '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',
   dangerouslyAllowBrowser: true // This is fine for demo purposes
 });
 
@@ -26,7 +25,7 @@ export const generateAnswer = async (question: string): Promise<ChatResponse> =>
     - 3 suggested follow-up questions`;
     
     // If we don't have a real API key, return mock data
-    if (client.apiKey === 'your-demo-api-key') {
+    if (client.apiKey === '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') {
       console.log("Using mock data (no API key provided)");
       return getMockResponse(question);
     }
