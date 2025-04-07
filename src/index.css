@@ -77,9 +77,11 @@
   body {
     @apply bg-background text-foreground font-sans;
   }
+}
 
+@layer components {
   .scripture {
-    @apply font-serif text-liahona-DEFAULT;
+    @apply font-serif text-[#183153];
   }
 
   .scripture-reference {

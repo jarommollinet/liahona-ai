@@ -15,7 +15,7 @@ const FollowUpQuestion: React.FC<FollowUpQuestionProps> = ({
   return (
     <Button
       variant="outline"
-      className="mr-2 mb-2 text-liahona-DEFAULT border-liahona-light hover:bg-liahona-light/10 text-left"
+      className="mr-2 mb-2 text-[#183153] border-[#295B8D] hover:bg-[#295B8D]/10 text-left"
       onClick={() => onQuestionClick(question.text)}
     >
       {question.text}
