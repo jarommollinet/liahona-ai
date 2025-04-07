@@ -1,17 +1,14 @@
-import OpenAI from "openai";
-import { ChatResponse } from '@/types';
 
-// Initialize the OpenAI client
-const client = new OpenAI({
-  apiKey: import.meta.env.VITE_OPENAI_API_KEY || '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',
-  dangerouslyAllowBrowser: true // This is fine for demo purposes
-});
+import { ChatResponse } from '@/types';
 
 export const generateAnswer = async (question: string): Promise<ChatResponse> => {
   console.log("Question sent to API:", question);
   
   try {
-    // Create the system prompt that instructs the model how to respond
+    // API endpoint
+    const endpoint = 'https://api.openai.com/v1/chat/completions';
+    
+    // Create the system prompt
     const systemPrompt = `You are an AI assistant specialized in answering questions about the Book of Mormon.
     When responding to questions:
     1. Always ground your answers in actual Book of Mormon scriptures.
@@ -23,24 +20,46 @@ export const generateAnswer = async (question: string): Promise<ChatResponse> =>
     - Main answer section addressing the question
     - At least 2 specific scripture references with the quoted text
     - 3 suggested follow-up questions`;
+
+    // Prepare headers and body for fetch request
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer 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'
+    };
     
-    // If we don't have a real API key, return mock data
-    if (client.apiKey === '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') {
-      console.log("Using mock data (no API key provided)");
-      return getMockResponse(question);
-    }
-    
-    const response = await client.chat.completions.create({
+    const body = JSON.stringify({
       model: "gpt-4o",
       messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: question }
+        {
+          role: "system",
+          content: systemPrompt
+        },
+        {
+          role: "user",
+          content: question
+        }
       ],
       temperature: 0.7,
     });
     
+    // Make the fetch request
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: headers,
+      body: body
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("Error from OpenAI API:", errorData);
+      throw new Error(`API request failed with status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    console.log("API response received:", data);
+    
     // Extract the content from the response
-    const content = response.choices[0].message.content || '';
+    const content = data.choices[0].message.content || '';
     
     // Parse the content to extract scripture references and follow-up questions
     return parseResponse(content, question);
