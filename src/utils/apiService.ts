@@ -1,5 +1,4 @@
 
-import { ChatResponse } from '@/types';
 import OpenAI from "openai";
 
 // Initialize the OpenAI client
@@ -53,10 +52,9 @@ export const generateAnswer = async (question: string): Promise<ChatResponse> =>
 
 // Helper function to parse the OpenAI response into our ChatResponse format
 const parseResponse = (content: string, originalQuestion: string): ChatResponse => {
-  // This is a simplified parser - in a real app you'd want more robust parsing
+  // Simplified parser - in a real app you'd want more robust parsing
   const lines = content.split('\n');
   
-  // Extract the main answer (everything before any references)
   let answer = '';
   let references = [];
   let followUpQuestions = [];
