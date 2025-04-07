@@ -1,5 +1,6 @@
 
 import OpenAI from "openai";
+import { ChatResponse } from '@/types';
 
 // Initialize the OpenAI client
 const client = new OpenAI({
